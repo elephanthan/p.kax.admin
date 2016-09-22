@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="test">
+	<select id="getContryCodeTable" resultType="ssu.pickax.vo.CountryCodeVo">
+		select * from countryCode
+	</select>
+	
+	<select id="getCrawlerInfoTable" resultType="ssu.pickax.vo.CrawlerInfoVo">
+		select * from crawlerInfo
+	</select>
+	
+	<select id="getCurrencyTable" resultType="ssu.pickax.vo.CurrencyVo">
+		select * from currency
+	</select>
+	
+	<update id="updateCodeTable" parameterType="ssu.pickax.vo.CodeCommonVo">
+		update ${menu}
+			set ${name} = #{val}
+			where ${seq_name} = #{seq} 
+	</update>
+</mapper>
