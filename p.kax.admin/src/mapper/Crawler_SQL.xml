@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="crawler">
+	<select id="getTweetsCnt" parameterType="ssu.pickax.vo.TweetVo" resultType="java.lang.Integer">
+		select
+			count(*)
+		from
+			twitter
+		where
+			tweet_keyword = #{tweet_keyword}	
+	</select>
+	
+	<select id="getTweets" parameterType="ssu.pickax.vo.TweetVo" resultType="ssu.pickax.vo.TweetVo">
+		select 
+			* 
+		from 
+			(
+			select 
+				@num:=@num+1 rownum,
+				C.*
+			from
+				(SELECT @num:=0) D,
+				(select
+					tweet_seq,
+					tweet_id,
+					tweet_keyword,
+					tweet_user,
+					tweet_text,
+					tweet_time
+			from
+				twitter
+				<where>
+					tweet_keyword = #{tweet_keyword}
+				</where>
+				order by tweet_time desc	
+				) C
+			) Z
+		<if test="present_page != null and present_page != ''">
+		 	where Z.rownum between #{present_first_item_idx} and #{present_last_item_idx}
+		 </if>
+	</select>
+</mapper>
